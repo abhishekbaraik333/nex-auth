@@ -12,7 +12,7 @@ export default function Connect(){
         })
 
         connection.on("error",(err)=>{
-            console.log("MongoDb connection error:", err);
+            console.log("MongoDb error:", err);
             process.exit();
             
         })

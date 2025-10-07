@@ -3,7 +3,6 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 export default function ResetPassword() {
   const [token, setToken] = useState('');
@@ -19,13 +18,11 @@ export default function ResetPassword() {
       });
       console.log(response);
       
-      toast.success(response.data.message);
       setTimeout(() => {
         router.push("/login");
       }, 2000);
     } catch (error:any) {
       console.log(error);
-      toast.error(error.response.data.error)
     }
   };
 

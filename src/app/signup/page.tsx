@@ -24,12 +24,19 @@ export default function SignIn() {
         console.log(response);
         router.push("/login")
         
-    } catch (error:any) {   
-        console.log("Signup failed", error);
-        
-    }finally{
-        setLoading(false)
+    } catch (error) {   
+        if (axios.isAxiosError(error)) {
+      // Handle Axios errors safely
+      console.error("Login failed:", error.response?.data || error.message);
+    } else if (error instanceof Error) {
+      // Handle generic JS errors
+      console.error("Login failed:", error.message);
+    } else {
+      console.error("An unexpected error occurred during login");
     }
+  } finally {
+    setLoading(false);
+  }
   };
 
   useEffect(() => {

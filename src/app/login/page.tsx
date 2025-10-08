@@ -67,7 +67,7 @@ export default function Login() {
           </div>
 
           <div className="mt-10 flex flex-col items-start justify-start w-full md:w-fit">
-            <label htmlFor="email" className="text-gray-400 text-left text-sm">
+            <label htmlFor="email" className="text-gray-600 text-left text-xs font-semibold opacity-80">
               E-mail
             </label>
             <input
@@ -78,7 +78,7 @@ export default function Login() {
               onChange={(e) => setUser({ ...user, email: e.target.value })}
             />
             <label
-              className="text-gray-400 text-left text-sm mt-8"
+              className="text-gray-600 text-left text-xs font-semibold opacity-80 mt-8"
               htmlFor="Hasło"
             >
               Hasło

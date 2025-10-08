@@ -247,7 +247,7 @@ export default function SignIn() {
                     >
                       ?
                     </button>
-                    <div className="absolute left-1/2 bottom-full -translate-x-1/2 mb-3 w-[400px] bg-gray-200 text-black text-[11px] px-2 py-1 rounded-lg shadow-2xl border border-gray-200 opacity-0 pointer-events-none transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100 group-hover:pointer-events-auto group-focus-within:pointer-events-auto z-50 text-center">
+                    <div className="absolute md:left-1/2 left-[-8rem] bottom-full -translate-x-1/2 mb-3 w-[400px] max-w-[90vw] sm:w-[400px] sm:max-w-none bg-gray-200 text-black text-[11px] px-2 py-1 rounded-lg shadow-4xl border border-gray-200 opacity-0 pointer-events-none transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100 group-hover:pointer-events-auto group-focus-within:pointer-events-auto z-50 text-center">
                       Wpisz nazwę np. Twojej firmy lub Twoje Imię, nazwa ta
                       będzie używana w komunikatach jako nazwa nadawcy. W
                       przypadku braku Nazwy skróconej będziemy używać Twojego
@@ -314,15 +314,15 @@ export default function SignIn() {
                     >
                       ?
                     </button>
-                    <div className="absolute left-1/2 bottom-full -translate-x-1/2 mb-3 w-[400px] bg-gray-200 text-black text-[11px] px-2 py-1 rounded-lg shadow-4xl border border-gray-200 opacity-0 pointer-events-none transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100 group-hover:pointer-events-auto group-focus-within:pointer-events-auto z-50 text-center">
+                    <div className="absolute md:left-1/2 left-[-8rem] bottom-full -translate-x-1/2 mb-3 w-[400px] max-w-[90vw] sm:w-[400px] sm:max-w-none bg-gray-200 text-black text-[11px] px-2 py-1 rounded-lg shadow-4xl border border-gray-200 opacity-0 pointer-events-none transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100 group-hover:pointer-events-auto group-focus-within:pointer-events-auto z-50 text-center">
                       Przklad: 01-990
                       <span
                         className="absolute left-1/2 bottom-[-10px] -translate-x-1/2 w-0 h-0 
-      border-x-8 border-x-transparent border-t-[10px] border-t-gray-200 shadow-2xl"
+    border-x-8 border-x-transparent border-t-[10px] border-t-gray-200 shadow-2xl"
                       ></span>
                       <span
                         className="absolute left-1/2 bottom-[-12px] -translate-x-1/2 w-0 h-0 
-      border-x-8 border-x-transparent border-t-[12px] border-t-gray-200 shadow-2xl"
+    border-x-8 border-x-transparent border-t-[12px] border-t-gray-200 shadow-2xl"
                       ></span>
                     </div>
                   </div>

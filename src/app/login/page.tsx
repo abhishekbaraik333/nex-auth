@@ -4,38 +4,23 @@ import Footer from "@/components/footer";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 export default function Login() {
   const router = useRouter();
-
-  const [buttonDisabled, setButtionDisabled] = useState(true);
-  const [loading, setLoading] = useState(false);
 
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
 
-  useEffect(() => {
-    if (user.email.length > 0 && user.password.length > 0) {
-      setButtionDisabled(false);
-    } else {
-      setButtionDisabled(true);
-    }
-  }, [user]);
-
   const onLogin = async () => {
     try {
-      setLoading(true);
       const response = await axios.post("/api/users/login", user);
-      console.log(response);
-
-      router.push("/profile");
+      router.push("/sample"); 
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // Handle Axios errors safely
         console.error("Login failed:", error.response?.data || error.message);
       } else if (error instanceof Error) {
         // Handle generic JS errors
@@ -43,8 +28,6 @@ export default function Login() {
       } else {
         console.error("An unexpected error occurred during login");
       }
-    } finally {
-      setLoading(false);
     }
   };
   return (
@@ -67,7 +50,10 @@ export default function Login() {
           </div>
 
           <div className="mt-10 flex flex-col items-start justify-start w-full md:w-fit">
-            <label htmlFor="email" className="text-gray-600 text-left text-xs font-semibold opacity-80">
+            <label
+              htmlFor="email"
+              className="text-gray-600 text-left text-xs font-semibold opacity-80"
+            >
               E-mail
             </label>
             <input

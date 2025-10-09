@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 const options = [
@@ -16,50 +16,34 @@ const options = [
 
 export default function SignIn() {
   const router = useRouter();
-  const [selectOpen, setSelectOpen] = useState(false);
   const [selected, setSelected] = useState("private");
 
   const [user, setUser] = useState({
     email: "",
-    password: "",
-    username: "",
+    Imie: "",
+    Telefon: "",
+    Nazwisko: "",
+    Haslo: "",
+    Powtorz_haslo: "",
+    Typ_konta: "private",
   });
-
-  const [buttonDisabled, setButtionDisabled] = useState(true);
-  const [loading, setLoading] = useState(false);
 
   const onSignUp = async () => {
     try {
-      setLoading(true);
       const response = await axios.post("/api/users/signup", user);
-      console.log(response);
-      router.push("/login");
+      router.push("/sample");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         // Handle Axios errors safely
-        console.error("Login failed:", error.response?.data || error.message);
+        console.error("Signup failed:", error.response?.data || error.message);
       } else if (error instanceof Error) {
         // Handle generic JS errors
-        console.error("Login failed:", error.message);
+        console.error("Signup failed:", error.message);
       } else {
-        console.error("An unexpected error occurred during login");
+        console.error("An unexpected error occurred during signup");
       }
-    } finally {
-      setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (
-      user.email.length > 0 &&
-      user.password.length > 0 &&
-      user.username.length > 0
-    ) {
-      setButtionDisabled(false);
-    } else {
-      setButtionDisabled(true);
-    }
-  }, [user]);
 
   const [allChecked, setAllChecked] = useState(false);
   const [consents, setConsents] = useState({
@@ -145,9 +129,9 @@ export default function SignIn() {
                   type="text"
                   className="bg-white w-full transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
                   id="password"
-                  value={user.password}
+                  value={user.Imie}
                   onChange={(e) =>
-                    setUser({ ...user, password: e.target.value })
+                    setUser({ ...user, Imie: e.target.value })
                   }
                 />
               </div>
@@ -156,7 +140,7 @@ export default function SignIn() {
             <div className="flex flex-col md:flex-row w-full items-center gap-6 mt-5">
               <div className="flex flex-col w-full  md:w-1/2">
                 <label
-                  htmlFor="email"
+                  htmlFor="Telefon"
                   className="text-gray-600 text-left text-xs font-semibold opacity-80"
                 >
                   Telefon<span className="text-red-500 opacity-75">*</span>
@@ -176,9 +160,9 @@ export default function SignIn() {
                     type="text"
                     className="bg-white h-[43px] w-full  transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-tr-md rounded-br-md focus:border-orange-500 focus:outline-none"
                     id="email"
-                    value={user.email}
+                    value={user.Telefon}
                     onChange={(e) =>
-                      setUser({ ...user, email: e.target.value })
+                      setUser({ ...user, Telefon: e.target.value })
                     }
                   />
                 </div>
@@ -186,7 +170,7 @@ export default function SignIn() {
               <div className="flex flex-col w-full  md:w-1/2">
                 <label
                   className="text-gray-600 text-left text-xs font-semibold opacity-80"
-                  htmlFor="Imię*"
+                  htmlFor="Nazwisko"
                 >
                   Nazwisko<span className="text-red-500 opacity-75">*</span>
                 </label>
@@ -194,9 +178,9 @@ export default function SignIn() {
                   type="text"
                   className="bg-white w-full transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
                   id="password"
-                  value={user.password}
+                  value={user.Nazwisko}
                   onChange={(e) =>
-                    setUser({ ...user, password: e.target.value })
+                    setUser({ ...user, Nazwisko: e.target.value })
                   }
                 />
               </div>
@@ -206,7 +190,7 @@ export default function SignIn() {
               <div className="flex flex-col w-full  md:w-1/2">
                 <label
                   className="text-gray-600 text-left text-xs font-semibold opacity-80"
-                  htmlFor="Imię*"
+                  htmlFor="Hasło"
                 >
                   Hasło<span className="text-red-500 opacity-75">*</span>
                 </label>
@@ -214,17 +198,15 @@ export default function SignIn() {
                   type="text"
                   className="bg-white w-full transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
                   id="password"
-                  value={user.password}
-                  onChange={(e) =>
-                    setUser({ ...user, password: e.target.value })
-                  }
+                  value={user.Haslo}
+                  onChange={(e) => setUser({ ...user, Haslo: e.target.value })}
                 />
               </div>
 
-                <div className="flex flex-col w-full  md:w-1/2">
+              <div className="flex flex-col w-full  md:w-1/2">
                 <label
                   className="text-gray-600 text-left text-xs font-semibold opacity-80"
-                  htmlFor="Imię*"
+                  htmlFor="Powtórz hasło"
                 >
                   Powtórz hasło
                   <span className="text-red-500 opacity-75">*</span>
@@ -233,9 +215,9 @@ export default function SignIn() {
                   type="text"
                   className="bg-white w-full transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
                   id="password"
-                  value={user.password}
+                  value={user.Powtorz_haslo}
                   onChange={(e) =>
-                    setUser({ ...user, password: e.target.value })
+                    setUser({ ...user, Powtorz_haslo: e.target.value })
                   }
                 />
               </div>
@@ -245,7 +227,7 @@ export default function SignIn() {
               <div className="w-full">
                 <label
                   className="text-gray-600 text-left text-xs font-semibold opacity-80"
-                  htmlFor="Imię*"
+                  htmlFor="Typ konta"
                 >
                   Typ konta
                   <span className="text-red-500 opacity-75">*</span>
@@ -269,7 +251,10 @@ export default function SignIn() {
                         type="radio"
                         value={option.value}
                         checked={selected === option.value}
-                        onChange={() => setSelected(option.value)}
+                        onChange={() => {
+                          setSelected(option.value);
+                          setUser({ ...user, Typ_konta: option.value }); // <--- add this line
+                        }}
                         className="sr-only"
                         name="accountType"
                       />

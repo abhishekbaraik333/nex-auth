@@ -608,7 +608,7 @@ export default function Login() {
                       checked={selectedTransferShipment === option.value}
                       onChange={() => {
                         setSelectedTransferShipment(option.value);
-                        setUser({ ...user, typeOfShipment: option.value }); // <--- add this line
+                        setUser({ ...user, transferShipment: option.value }); // <--- add this line
                       }}
                       className="sr-only"
                       name="accountType"

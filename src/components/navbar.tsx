@@ -9,19 +9,19 @@ export default function Navbar() {
   return (
     <>
       {!menuOpen && (
-        <nav className="w-full md:px-[10%] px-4 pt-2 pb-10 md:pb-0 flex items-center justify-between bg-white bg-opacity-70 fixed top-0 left-0 z-50 shadow-xl">
+        <nav className="w-full lg:px-[10%] px-4 pt-2 pb-10 lg:pb-0 flex items-center justify-between bg-white bg-opacity-70 fixed top-0 left-0 z-50 shadow-xl">
           {/* Logo */}
           <div className="flex items-center gap-10">
             <div className="text-2xl font-semibold text-white">
               <Image
                 src="/inpost-logo.svg"
                 alt="Logo"
-                className="md:w-[150px] w-[100px]"
+                className="lg:w-[150px] w-[100px]"
                 width={150}
                 height={40}
               />
             </div>
-            <div className="flex-col gap-10 hidden md:flex">
+            <div className="flex-col gap-10 hidden lg:flex">
               <div className="flex items-center gap-5">
                 <a href="#" className="flex items-center gap-2">
                   {" "}
@@ -153,7 +153,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex flex-col items-center gap-2">
+          <div className="hidden lg:flex flex-col items-center gap-2">
             <Link href="/login" className="btn-primary text-sm">
               LOGOWANIE
             </Link>
@@ -165,10 +165,10 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <div className="flex flex-row-reverse items-center gap-4 md:hidden">
+          <div className="flex flex-row-reverse items-center gap-4 lg:hidden">
             {/* Hamburger Button */}
             <button
-              className="flex flex-col md:hidden justify-center items-center space-y-1 outline-none"
+              className="flex flex-col lg:hidden justify-center items-center space-y-1 outline-none"
               aria-label="Open Menu"
               onClick={() => setMenuOpen(!menuOpen)}
             >
@@ -217,7 +217,7 @@ export default function Navbar() {
             <Image
               src="/inpost-logo-white.svg"
               alt="Logo"
-              className="md:w-[150px] w-[100px] pt-2"
+              className="lg:w-[150px] w-[100px] pt-2"
               width={150}
               height={40}
             />
@@ -377,7 +377,7 @@ export default function Navbar() {
               </a>
             </div>
 
-            <div className="md:hidden flex flex-col items-center gap-2 w-full">
+            <div className="lg:hidden flex flex-col items-center gap-2 w-full">
               <Link
                 href="/login"
                 className="bg-[#ffcb04] text-black text-base font-[500]  w-full p-2 flex items-center justify-between"

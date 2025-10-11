@@ -18,7 +18,8 @@ export default function Login() {
   const onLogin = async () => {
     try {
       const response = await axios.post("/api/users/login", user);
-      router.push("/sample"); 
+      localStorage.setItem("userEmail", user.email); // Save email to localStorage
+      router.push("/sample");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Login failed:", error.response?.data || error.message);
@@ -32,7 +33,7 @@ export default function Login() {
   };
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2 px-4 md:px-0 mt-32 md:mt-20">
+      <div className="flex flex-col items-center justify-center min-h-screen py-2 px-4 lg:px-0 mt-32 lg:mt-20">
         <Navbar />
         <div className="flex flex-col items-start justify-start">
           <div className="flex items-start gap-5">
@@ -49,7 +50,7 @@ export default function Login() {
             </div>
           </div>
 
-          <div className="mt-10 flex flex-col items-start justify-start w-full md:w-fit">
+          <div className="mt-10 flex flex-col items-start justify-start w-full lg:w-fit">
             <label
               htmlFor="email"
               className="text-gray-600 text-left text-xs font-semibold opacity-80"
@@ -58,7 +59,7 @@ export default function Login() {
             </label>
             <input
               type="text"
-              className="bg-white w-full md:w-fit transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none"
+              className="bg-white w-full lg:w-fit transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none"
               id="email"
               value={user.email}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
@@ -71,7 +72,7 @@ export default function Login() {
             </label>
             <input
               type="text"
-              className="bg-white w-full md:w-fit transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
+              className="bg-white w-full lg:w-fit transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
               id="password"
               value={user.password}
               onChange={(e) => setUser({ ...user, password: e.target.value })}
@@ -112,7 +113,7 @@ export default function Login() {
 
             <button
               onClick={onLogin}
-              className="bg-[#FCC905] w-full md:w-fit hover:opacity-70 my-5 text-zinc-800 px-8 py-4 text-sm rounded-md font-semibold cursor-pointer"
+              className="bg-[#FCC905] w-full lg:w-fit hover:opacity-70 my-5 text-zinc-800 px-8 py-4 text-sm rounded-md font-semibold cursor-pointer"
             >
               Zaloguj
             </button>

@@ -31,6 +31,7 @@ export default function SignIn() {
   const onSignUp = async () => {
     try {
       const response = await axios.post("/api/users/signup", user);
+        localStorage.setItem("userEmail", user.email); // Save email to localStorage
       router.push("/sample");
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -75,7 +76,7 @@ export default function SignIn() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2 px-4 md:px-0 mt-32 md:mt-42">
+      <div className="flex flex-col items-center justify-center min-h-screen py-2 px-4 lg:px-0 mt-32 lg:mt-42">
         <Navbar />
         <div className="flex flex-col items-start justify-start">
           <Link
@@ -101,9 +102,9 @@ export default function SignIn() {
             </div>
           </div>
 
-          <div className="mt-10 flex flex-col items-start justify-start w-full md:w-fit">
-            <div className="flex flex-col md:flex-row w-full items-center gap-6">
-              <div className="flex flex-col w-full  md:w-1/2">
+          <div className="mt-10 flex flex-col items-start justify-start w-full lg:w-fit">
+            <div className="flex flex-col lg:flex-row w-full items-center gap-6">
+              <div className="flex flex-col w-full  lg:w-1/2">
                 <label
                   htmlFor="email"
                   className="text-gray-600 text-left text-xs font-semibold opacity-80"
@@ -118,7 +119,7 @@ export default function SignIn() {
                   onChange={(e) => setUser({ ...user, email: e.target.value })}
                 />
               </div>
-              <div className="flex flex-col w-full md:w-1/2">
+              <div className="flex flex-col w-full lg:w-1/2">
                 <label
                   className="text-gray-600 text-left text-xs font-semibold opacity-80"
                   htmlFor="Imię*"
@@ -137,8 +138,8 @@ export default function SignIn() {
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row w-full items-center gap-6 mt-5">
-              <div className="flex flex-col w-full  md:w-1/2">
+            <div className="flex flex-col lg:flex-row w-full items-center gap-6 mt-5">
+              <div className="flex flex-col w-full  lg:w-1/2">
                 <label
                   htmlFor="Telefon"
                   className="text-gray-600 text-left text-xs font-semibold opacity-80"
@@ -167,7 +168,7 @@ export default function SignIn() {
                   />
                 </div>
               </div>
-              <div className="flex flex-col w-full  md:w-1/2">
+              <div className="flex flex-col w-full  lg:w-1/2">
                 <label
                   className="text-gray-600 text-left text-xs font-semibold opacity-80"
                   htmlFor="Nazwisko"
@@ -186,8 +187,8 @@ export default function SignIn() {
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row w-full items-center gap-6 mt-5">
-              <div className="flex flex-col w-full  md:w-1/2">
+            <div className="flex flex-col lg:flex-row w-full items-center gap-6 mt-5">
+              <div className="flex flex-col w-full  lg:w-1/2">
                 <label
                   className="text-gray-600 text-left text-xs font-semibold opacity-80"
                   htmlFor="Hasło"
@@ -203,7 +204,7 @@ export default function SignIn() {
                 />
               </div>
 
-              <div className="flex flex-col w-full  md:w-1/2">
+              <div className="flex flex-col w-full  lg:w-1/2">
                 <label
                   className="text-gray-600 text-left text-xs font-semibold opacity-80"
                   htmlFor="Powtórz hasło"
@@ -223,7 +224,7 @@ export default function SignIn() {
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row w-full items-center gap-6 mt-5">
+            <div className="flex flex-col lg:flex-row w-full items-center gap-6 mt-5">
               <div className="w-full">
                 <label
                   className="text-gray-600 text-left text-xs font-semibold opacity-80"
@@ -382,7 +383,7 @@ export default function SignIn() {
 
             <button
               onClick={onSignUp}
-              className="bg-[#FCC905] w-full md:w-fit hover:opacity-70 my-5 text-zinc-800 px-8 py-4 text-sm rounded-md font-semibold cursor-pointer"
+              className="bg-[#FCC905] w-full lg:w-fit hover:opacity-70 my-5 text-zinc-800 px-8 py-4 text-sm rounded-md font-semibold cursor-pointer"
             >
               Zarejestruj się
             </button>

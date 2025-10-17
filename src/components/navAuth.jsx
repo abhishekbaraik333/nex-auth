@@ -223,12 +223,12 @@ export default function NavAuth() {
                 >
                   Wyślij przesyłki
                 </Link>
-                <a
-                  href="#"
+                <Link
+                  href="/shipments"
                   className="text-xl border-l-1 pl-2 ml-2 tracking-tighter border-zinc-400 text-black hover:text-[#ffc000] opacity-80 uppercase"
                 >
                   moje przesyłki
-                </a>
+                </Link>
                 <a
                   href="#"
                   className="text-xl border-l-1 pl-2 ml-2 tracking-tighter border-zinc-400 text-black hover:text-[#ffc000] opacity-80 uppercase"
@@ -507,18 +507,18 @@ export default function NavAuth() {
               </a>
             </div>
             <div className="flex flex-col gap-2">
-              <a
-                href="#"
+              <Link
+                href="/sample"
                 className="text-sm font-medium  text-white hover:text-[#ffc000] uppercase"
               >
                 Wyślij przesyłki
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="/shipments"
                 className="text-sm font-medium  text-white hover:text-[#ffc000] uppercase"
               >
                 Moje przesyłki
-              </a>
+              </Link>
               <a
                 href="#"
                 className="text-sm font-medium  text-white hover:text-[#ffc000] uppercase"
@@ -541,7 +541,7 @@ export default function NavAuth() {
 
             <div className="lg:hidden flex flex-col items-center gap-2 w-full">
               <Link
-                href="/login"
+                onClick={logout}
                 className="bg-[#ffcb04] text-black text-base font-medium w-full p-1 flex items-center justify-between"
               >
                 <span>WYLOGUJ</span>

@@ -132,6 +132,7 @@ export default function Shipments() {
               src="/niesmialy_2.svg"
               width={50}
               height={50}
+              className="min-w-[60px]"
               alt="inpost"
             ></Image>
           </div>
@@ -147,18 +148,18 @@ export default function Shipments() {
             <thead>
               <tr className="shipments-table text-gray-800 text-[10px] text-wrap">
                 <th className="py-3 px-2"></th>
-                <th className="py-3 px-2 font-semibold hidden lg:flex">Ip</th>
-                <th className="py-3 px-2 font-semibold hidden lg:flex">Shipment number</th>
+                <th className="py-3 px-2 font-semibold hidden lg:table-cell ">Ip</th>
+                <th className="py-3 px-2 font-semibold hidden lg:table-cell ">Shipment number</th>
                 <th className="py-3 px-2 font-semibold">Creation date</th>
-                <th className="py-3 px-2 font-semibold hidden lg:flex">Shipment type</th>
-                <th className="py-3 px-2 font-semibold hidden lg:flex">
+                <th className="py-3 px-2 font-semibold hidden lg:table-cell">Shipment type</th>
+                <th className="py-3 px-2 font-semibold hidden lg:table-cell ">
                   Method of assignment
                 </th>
-                <th className="py-3 px-2 font-semibold hidden lg:flex">Shipment size</th>
+                <th className="py-3 px-2 font-semibold hidden lg:table-cell ">Shipment size</th>
                 <th className="py-3 px-2 font-semibold">Recipient</th>
-                <th className="py-3 px-2 font-semibold hidden lg:flex">Pickup method</th>
+                <th className="py-3 px-2 font-semibold hidden lg:table-cell ">Pickup method</th>
                 <th className="py-3 px-2 font-semibold">Status</th>
-                <th className="py-3 px-2 font-semibold hidden lg:flex">
+                <th className="py-3 px-2 font-semibold hidden lg:table-cell ">
                   Date of last change in status
                 </th>
                 <th className="py-3 px-2 font-semibold">Shares</th>
@@ -173,9 +174,9 @@ export default function Shipments() {
                   <td className="py-3 px-2">
                     <input type="checkbox" />
                   </td>
-                  <td className="py-3 px-2 hidden lg:flex">{item.shipmentIndex}</td>
-                  <td className="py-3 px-2 hidden lg:flex">{item.shipmentNumber}</td>
-                  <td className="py-3 px-2 ">{formatDate(item.createdAt)}</td>
+                  <td className="py-3 px-2 hidden lg:table-cell">{item.shipmentIndex}</td>
+                  <td className="py-3 px-2 hidden lg:table-cell">{item.shipmentNumber}</td>
+                  <td className="py-3 px-2">{formatDate(item.createdAt)}</td>
                   <td className="py-3 px-2 hidden lg:flex items-center flex-col justify-center">
                     <span className="mr-2">
                       <div className="relative flex items-center group w-fit">
@@ -210,8 +211,8 @@ export default function Shipments() {
                     </span>
                     {item.shipmentType}
                   </td>
-                  <td className="py-3 px-2 text-center hidden lg:flex">{item.pickupMethod}</td>
-                  <td className="py-3 px-2 hidden lg:flex">
+                  <td className="py-3 px-2 text-center hidden lg:table-cell ">{item.pickupMethod}</td>
+                  <td className="py-3 px-2 hidden lg:table-cell">
                     <select
                       className="border border-gray-400 rounded px-2 py-1 text-sm"
                       defaultValue={item.shipmentSize}
@@ -222,8 +223,8 @@ export default function Shipments() {
                       <option value="D">D</option>
                     </select>
                   </td>
-                  <td className="py-3 px-2 hidden lg:flex" >{item.recipient}</td>
-                  <td className="py-3 px-2">
+                  <td className="py-3 px-2" >{item.recipient}</td>
+                  <td className="py-3 px-2 hidden lg:table-cell">
                     <div className="rounded flex justify-center">
                       <div className="relative flex items-center flex-col justify-center group w-fit">
                         <svg
@@ -264,7 +265,7 @@ export default function Shipments() {
                     </div>
                   </td>
                   <td className="py-3 px-2">{item.Status}</td>
-                  <td className="py-3 px-2 hidden lg:flex">{formatDate(item.updatedAt)}</td>
+                  <td className="py-3 px-2 hidden lg:table-cell">{formatDate(item.updatedAt)}</td>
 
                   <td className="py-3 px-2">
                     <div className="relative flex items-center justify-end h-8">
@@ -312,8 +313,8 @@ export default function Shipments() {
             </tbody>
           </table>
         </div>
-        <Footer />
       </div>
+        <Footer />
     </>
   );
 }

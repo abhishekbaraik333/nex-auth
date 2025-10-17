@@ -20,7 +20,6 @@ type ShipmentType = {
   shipmentSize: string;
   shipmentType: string;
   shipmentIndex: string;
-  __v?: number;
 };
 
 export default function Shipments() {
@@ -149,20 +148,20 @@ export default function Shipments() {
               <tr className="shipments-table text-gray-800 text-[10px] text-wrap">
                 <th className="py-3 px-2"></th>
                 <th className="py-3 px-2 font-semibold hidden lg:table-cell ">Ip</th>
-                <th className="py-3 px-2 font-semibold hidden lg:table-cell ">Shipment number</th>
-                <th className="py-3 px-2 font-semibold">Creation date</th>
-                <th className="py-3 px-2 font-semibold hidden lg:table-cell">Shipment type</th>
+                <th className="py-3 px-2 font-semibold hidden lg:table-cell ">Numer przesyłki</th>
+                <th className="py-3 px-2 font-semibold">Data utworzenia</th>
+                <th className="py-3 px-2 font-semibold hidden lg:table-cell">Typ przesyłki</th>
                 <th className="py-3 px-2 font-semibold hidden lg:table-cell ">
-                  Method of assignment
+                  Sposób nadania
                 </th>
-                <th className="py-3 px-2 font-semibold hidden lg:table-cell ">Shipment size</th>
-                <th className="py-3 px-2 font-semibold">Recipient</th>
-                <th className="py-3 px-2 font-semibold hidden lg:table-cell ">Pickup method</th>
+                <th className="py-3 px-2 font-semibold hidden lg:table-cell ">Rozmiar przesyłki</th>
+                <th className="py-3 px-2 font-semibold">Odbiorca</th>
+                <th className="py-3 px-2 font-semibold hidden lg:table-cell ">Sposób odbioru</th>
                 <th className="py-3 px-2 font-semibold">Status</th>
                 <th className="py-3 px-2 font-semibold hidden lg:table-cell ">
-                  Date of last change in status
+                 Data ostatniej zmiany statusu
                 </th>
-                <th className="py-3 px-2 font-semibold">Shares</th>
+                <th className="py-3 px-2 font-semibold">Akcje</th>
               </tr>
             </thead>
             <tbody>
@@ -265,7 +264,7 @@ export default function Shipments() {
                     </div>
                   </td>
                   <td className="py-3 px-2">{item.Status}</td>
-                  <td className="py-3 px-2 hidden lg:table-cell">{formatDate(item.updatedAt)}</td>
+                  <td className="py-3 px-2 hidden lg:table-cell text-center">{formatDate(item.updatedAt)}</td>
 
                   <td className="py-3 px-2">
                     <div className="relative flex items-center justify-end h-8">

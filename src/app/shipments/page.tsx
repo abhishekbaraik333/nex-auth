@@ -19,7 +19,7 @@ type ShipmentType = {
   shipmentNumber: string;
   shipmentSize: string;
   shipmentType: string;
-  shipmentIndex: String;
+  shipmentIndex: string;
   __v?: number;
 };
 
@@ -139,7 +139,7 @@ export default function Shipments() {
           <div className="bg-[#404041] p-2 font-semibold text-sm">
             You can also view Allegro InPost: Kurier24, Paczkomat® 24/7 and
             miniKurier24 in the shipment list - check the appropriate box in the
-            "Passage type" option
+            &quot;Passage type&quot; option
           </div>
         </div>
 

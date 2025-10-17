@@ -14,7 +14,7 @@ const options = [
   { value: "foreign", label: "Firma zagraniczna" },
 ];
 
-export default function SignIn() {
+export default function SignUp() {
   const router = useRouter();
   const [selected, setSelected] = useState("private");
 

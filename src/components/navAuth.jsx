@@ -217,12 +217,12 @@ export default function NavAuth() {
               </div>
 
               <div>
-                <a
-                  href="#"
+                <Link
+                  href="/sample"
                   className="text-xl border-l-1 pl-4  tracking-tighter border-zinc-400  hover:text-[#ffc000] opacity-80 uppercase text-[#ffc000] "
                 >
                   Wyślij przesyłki
-                </a>
+                </Link>
                 <a
                   href="#"
                   className="text-xl border-l-1 pl-2 ml-2 tracking-tighter border-zinc-400 text-black hover:text-[#ffc000] opacity-80 uppercase"

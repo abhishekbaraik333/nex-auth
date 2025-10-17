@@ -2,13 +2,12 @@
 import NavAuth from "@/components/navAuth";
 import Footer from "@/components/footer";
 import axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const typeShipment = [
-  { value: "Parcel Lockers® 24/7", label: "Paczkomat® 24/7" },
+  { value: "Paczkomat® 24/7", label: "Paczkomat® 24/7" },
   { value: "InPost Courier", label: "InPost Kurier" },
 ];
 
@@ -21,36 +20,36 @@ const packageSize = [
 
 const transferShipment = [
   {
-    value: "I will send it at the Paczkomat® slot machine",
+    value: "Paczkomat®",
     label: "Nadam w automacie Paczkomat®",
   },
   {
-    value: "The parcel will be collected by the InPost courier",
+    value: "kurier InPost",
     label: "Przesyłkę odbierze kurier InPost",
     label2: "Usługa dodatkowo płatna",
   },
   {
-    value: "I will send it at PaczkoPunkt",
+    value: "PaczkoPunkcie",
     label: "Nadam w PaczkoPunkcie",
     label2: "Sprawdź gdzie nadać przesyłkę",
   },
 ];
 
-export default function Login() {
+export default function Sample() {
   const router = useRouter();
   const [selectedShipment, setSelectedShipment] = useState(
-    "Parcel Lockers® 24/7"
+    "Paczkomat® 24/7"
   );
 
   const [selectedTransferShipment, setSelectedTransferShipment] = useState(
-    "I will send it at the Paczkomat® slot machine"
+    "Paczkomat®"
   );
   const [selectOpen, setSelectOpen] = useState(false);
 
   const [selectedPackage, setSelectedPackage] = useState("A");
 
   const [user, setUser] = useState({
-    typeOfShipment: "Parcel Lockers® 24/7",
+    typeOfShipment: "Paczkomat® 24/7",
     packageSize: "A",
     email: "",
     telephone: "",
@@ -65,13 +64,13 @@ export default function Login() {
     downloadValue: "",
     additionalProtection: "Do 5 000.00 zł",
     packageOnWeekend: "",
-    transferShipment: "I will send it at the Paczkomat® slot machine",
+    transferShipment: "Paczkomat®",
   });
 
   const onSubmit = async () => {
     try {
       const response = await axios.post("/api/users/sample", user);
-      router.push("/sample");
+      router.push("/shipments");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         // Handle Axios errors safely
@@ -86,14 +85,14 @@ export default function Login() {
   };
 
   const filteredPackageSizes =
-    selectedShipment === "Parcel Lockers® 24/7"
+    selectedShipment === "Paczkomat® 24/7"
       ? packageSize.filter((pkg) => ["A", "B", "C"].includes(pkg.value))
       : packageSize; // all options for InPost Courier
 
   // Optional useEffect for auto-reset
   useEffect(() => {
     if (
-      selectedShipment === "Parcel Lockers® 24/7" &&
+      selectedShipment === "Paczkomat® 24/7" &&
       !["A", "B", "C"].includes(selectedPackage)
     ) {
       setSelectedPackage("A");
@@ -252,7 +251,7 @@ export default function Login() {
           </div>
 
           {/* PICKUP POINT */}
-          {selectedShipment === "Parcel Lockers® 24/7" ? (
+          {selectedShipment === "Paczkomat® 24/7" ? (
             <div className="flex flex-col lg:flex-row w-full lg:items-center gap-1 lg:gap-3 mt-5">
               <div className="lg:w-[20%] flex lg:justify-end">
                 <label className="text-gray-600  lg:text-right text-xs font-semibold opacity-80 text-nowrap">

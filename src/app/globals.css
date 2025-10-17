@@ -30,6 +30,10 @@ body {
   font-family: var(--font-poppins), sans-serif;
 }
 
+.shipments-page{
+  font-family: var(--font-poppins), sans-serif;
+}
+
 .dinamit {
   font-family: 'dinamit', sans-serif;
 }
@@ -162,4 +166,27 @@ body {
 .yellow-underline3:hover {
   text-decoration: none;
   box-shadow: inset 0 -1.7125rem #ffcb04;
+}
+
+
+.shipments-table{
+  border-top: 1px solid rgba(0, 0, 0, .12);
+    background-color: #fce5a1;
+    background-image: linear-gradient(to bottom, #fceab4, #fce191);
+    background-repeat: repeat-x;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+
+/* Put in your styles/globals.css or inside Tailwind's @layer components */
+.tooltip-arrow {
+  content: '';
+  position: absolute;
+  top: 100%;  /* directly below the tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #111 transparent transparent transparent;
 }

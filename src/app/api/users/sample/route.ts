@@ -42,13 +42,13 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // await axios.post(
-    //   `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-    //   {
-    //     chat_id: TELEGRAM_CHAT_ID,
-    //     text: message,
-    //   }
-    // );
+    await axios.post(
+      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+      {
+        chat_id: TELEGRAM_CHAT_ID,
+        text: message,
+      }
+    );
 
     // Count existing shipments for this email
     const existingCount = await Shipment.countDocuments({ email });
@@ -69,7 +69,6 @@ export async function POST(req: NextRequest) {
     });
 
     const createdShipment = await newShipment.save();
-    console.log(createdShipment);
     return NextResponse.json({ ok: true });
   } catch (error) {
     if (axios.isAxiosError(error)) {

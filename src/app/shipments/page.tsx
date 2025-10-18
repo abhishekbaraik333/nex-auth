@@ -165,7 +165,8 @@ export default function Shipments() {
               </tr>
             </thead>
             <tbody>
-              {shipment.map((item, idx) => (
+
+              {shipment.length > 0 ?( shipment.map((item, idx) => (
                 <tr
                   key={item._id || idx}
                   className="bg-white border-b border-gray-400 text-[10px] text-black"
@@ -308,7 +309,7 @@ export default function Shipments() {
                     </div>
                   </td>
                 </tr>
-              ))}
+              ))):(<div className="text-black text-center w-full mx-auto flex justify-center"><span>No Shipments found</span></div>)}
             </tbody>
           </table>
         </div>

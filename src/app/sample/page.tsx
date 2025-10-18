@@ -3,7 +3,7 @@ import NavAuth from "@/components/navAuth";
 import Footer from "@/components/footer";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 const typeShipment = [
@@ -16,6 +16,14 @@ const packageSize = [
   { value: "B", size: "max. 19 x 38 x 64 cm" },
   { value: "C", size: "max. 41 x 38 x 64 cm" },
   { value: "D", size: "max. 80 x 50 x 50 cm" },
+];
+
+type PickupPoint = { location: string; subLocation: string };
+
+const pickupPoint: PickupPoint[] = [
+  { location: "SUW04BAPP", subLocation: "Konińska 11, 16-400 Suwałki" },
+  { location: "DEN01A", subLocation: "Wolności 4, 74-400 Dębno" },
+  { location: "TOR62M", subLocation: "Popiełuszki 1, 87-100 Toruń" },
 ];
 
 const transferShipment = [
@@ -37,16 +45,62 @@ const transferShipment = [
 
 export default function Sample() {
   const router = useRouter();
-  const [selectedShipment, setSelectedShipment] = useState(
-    "Paczkomat® 24/7"
-  );
+  const [selectedShipment, setSelectedShipment] = useState("Paczkomat® 24/7");
 
-  const [selectedTransferShipment, setSelectedTransferShipment] = useState(
-    "Paczkomat®"
-  );
+  const [selectedTransferShipment, setSelectedTransferShipment] =
+    useState("Paczkomat®");
   const [selectOpen, setSelectOpen] = useState(false);
 
   const [selectedPackage, setSelectedPackage] = useState("A");
+
+  const [selectLocationOpen, setSelectLocationOpen] = useState(false);
+  const [search, setSearch] = useState<string>("");
+  const [selectedLocation, setSelectedLocation] = useState<PickupPoint | null>(
+    null
+  );
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const [isVoucherOpen, setIsVoucherOpen] = useState(false);
+  const [voucher, setVoucher] = useState(""); // your voucher state
+  const [voucherSubmitted, setVoucherSubmitted] = useState(false); // your voucher state
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleVoucherClose = () => setIsVoucherOpen(false);
+  const handleVoucherChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setVoucher(e.target.value);
+
+  const handleVoucherOpen = () => {
+    if (!user.email || !user.telephone || !user.downloadValue) {
+      alert("Please fill the required fields before applying voucher.");
+      return;
+    }
+    setIsVoucherOpen(true);
+  };
+  const handleVoucherSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setVoucher("");
+    setIsLoading(true); // start loader
+
+    try {
+      const response = await axios.post("/api/users/sample", user);
+      router.push("/shipments");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // Handle Axios errors safely
+        console.error("form submission failed:", error.response?.data || error.message);
+      } else if (error instanceof Error) {
+        // Handle generic JS errors
+        console.error("form submission failed:", error.message);
+      } else {
+        console.error("An unexpected error occurred during form submission");
+      }
+    }
+    setTimeout(() => {
+      setIsLoading(false); // stop loader
+      setVoucherSubmitted(true); // show success
+      router.push("/shipments");
+    }, 3000); // 3 seconds
+  };
 
   const [user, setUser] = useState({
     typeOfShipment: "Paczkomat® 24/7",
@@ -67,19 +121,54 @@ export default function Sample() {
     transferShipment: "Paczkomat®",
   });
 
+  const filtered =
+    search.length >= 3
+      ? pickupPoint.filter((p) =>
+          p.location.toLowerCase().includes(search.toLowerCase())
+        )
+      : [];
+
+  const handleSelect = (point: PickupPoint) => {
+    setSelectedLocation(point);
+    setUser((prevUser) => ({
+      ...prevUser,
+      pickupPoint: point.location,
+    }));
+    setSelectLocationOpen(false);
+    setSearch("");
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        selectLocationOpen &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setSelectLocationOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [selectLocationOpen]);
+
   const onSubmit = async () => {
+    if (!user.email || !user.telephone || !user.downloadValue) {
+      alert("Please fill the required fields before submitting.");
+      return; // prevent submit
+    }
     try {
       const response = await axios.post("/api/users/sample", user);
       router.push("/shipments");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         // Handle Axios errors safely
-        console.error("Signup failed:", error.response?.data || error.message);
+        console.error("form submission failed:", error.response?.data || error.message);
       } else if (error instanceof Error) {
         // Handle generic JS errors
-        console.error("Signup failed:", error.message);
+        console.error("form submission failed:", error.message);
       } else {
-        console.error("An unexpected error occurred during signup");
+        console.error("An unexpected error occurred during form submission");
       }
     }
   };
@@ -100,14 +189,13 @@ export default function Sample() {
     }
   }, [selectedShipment]);
 
-
   return (
     <>
       <div className="sample-page flex flex-col items-center justify-center min-h-screen py-2 px-4 lg:px-0 mt-32 lg:mt-20">
         <NavAuth />
         <div className="lg:mt-10 flex flex-col items-start justify-start w-full md:p-4 lg:p-0 lg:w-1/2">
           <p className="text-black lg:hidden font-medium text-base opacity-90 lg:ml-[23%] mb-10 italic">
-             Wyślij przesyłki &gt;  Przygotuj jedną 
+            Wyślij przesyłki &gt; Przygotuj jedną
           </p>
           <p className="text-black font-semibold text-sm opacity-70 lg:ml-[23%]">
             Sposób doręczenia
@@ -263,52 +351,128 @@ export default function Sample() {
                 <div className="flex flex-col w-full ">
                   <div className="flex items-center">
                     {/* Select dropdown */}
-                    <div className="relative w-full">
-                      <button
-                        type="button"
-                        onClick={() => setSelectOpen((open) => !open)}
-                        className="bg-white h-[43px] w-full transition-all ease duration-200 text-black py-2 pl-3 pr-1 border border-gray-400 rounded-tl-md rounded-bl-md focus:border-yellow-400 focus:outline-none placeholder:opacity-75 placeholder:text-xs flex items-center justify-between"
-                        id="paczkomat"
-                        aria-haspopup="listbox"
-                        aria-expanded={selectOpen}
-                      >
-                        <span className="text-gray-400 text-xs">
-                          Wpisz fragment nazwy lub lokalizacji
-                        </span>
-                        {/* Arrow icon */}
-                        <span
-                          className={`ml-2 w-4 h-4 transition-transform duration-150 ease-in-out text-gray-400 ${
-                            selectOpen ? "rotate-180" : "rotate-0"
-                          }`}
-                        >
-                          <svg
-                            fill="none"
-                            viewBox="0 0 20 20"
-                            className="w-4 h-4"
+                    <div className="relative w-full" ref={dropdownRef}>
+                      {selectLocationOpen ? (
+                        <div className="relative flex items-center">
+                          <input
+                            type="text"
+                            className="bg-white h-[43px] w-full transition-all ease duration-200 text-black py-2 pl-3 pr-10 border border-gray-400 rounded-tl-md rounded-bl-md text-xs focus:border-yellow-400 focus:outline-none"
+                            placeholder="Wpisz kod punktu (np. SUW04BAPP)"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            autoFocus
+                          />
+                          {/* Arrow icon positioned over the input */}
+                          <button
+                            type="button"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                            onClick={() => {
+                              setSelectLocationOpen(false);
+                              setSearch("");
+                            }}
                           >
-                            <path
-                              d="M6 8l4 4 4-4"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </span>
-                      </button>
-                      {/* Dropdown (Optional: only one option, so can be hidden) */}
-                      {selectOpen && (
-                        <ul
-                          className="absolute left-0 w-full bg-[#EEEEEE] border border-gray-200 shadow z-10 text-gray-900"
-                          tabIndex={-1}
-                          role="listbox"
+                            <span
+                              className={`w-4 h-4 transition-transform duration-150 ease-in-out text-gray-400 ${
+                                selectLocationOpen ? "rotate-180" : "rotate-0"
+                              }`}
+                            >
+                              <svg
+                                fill="none"
+                                viewBox="0 0 20 20"
+                                className="w-4 h-4"
+                              >
+                                <path
+                                  d="M6 8l4 4 4-4"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setSelectLocationOpen(true)}
+                          className="bg-white h-[43px] w-full transition-all ease duration-200 text-black py-2 pl-3 pr-1 border border-gray-400 rounded-tl-md rounded-bl-md flex items-center justify-between"
+                          id="paczkomat"
+                          aria-haspopup="listbox"
+                          aria-expanded={selectLocationOpen}
                         >
-                          <li
-                            className="px-4 py-2 text-xs cursor-pointer text-gray-500 font-semibold"
-                            onClick={() => setSelectOpen(false)}
+                          <span className="text-gray-400 text-xs">
+                            {selectedLocation
+                              ? selectedLocation.location
+                              : " Wpisz fragment nazwy lub lokalizacji "}
+                          </span>
+                          <span
+                            className={`ml-2 w-4 h-4 transition-transform duration-150 ease-in-out text-gray-400 ${
+                              selectLocationOpen ? "rotate-180" : "rotate-0"
+                            }`}
                           >
-                            Zacznij wpisywać, aby wyszukać – minimum 3 znaki
-                          </li>
+                            <svg
+                              fill="none"
+                              viewBox="0 0 20 20"
+                              className="w-4 h-4"
+                            >
+                              <path
+                                d="M6 8l4 4 4-4"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </button>
+                      )}
+
+                      {selectLocationOpen && (
+                        <ul className="absolute left-0 w-full bg-[#EEEEEE] border border-gray-200 shadow z-10 text-gray-900 mt-1">
+                          {search.length < 3 ? (
+                            <li className="px-4 py-2 text-xs text-gray-500 font-semibold">
+                              Zacznij wpisywać, aby wyszukać – minimum 3 znaki
+                            </li>
+                          ) : filtered.length === 0 ? (
+                            <li className="px-4 py-2 text-xs text-gray-500">
+                              Brak wyników
+                            </li>
+                          ) : (
+                            filtered.map((point) => (
+                              <li
+                                key={point.location}
+                                className="px-4 py-2 text-xs cursor-pointer hover:bg-gray-200"
+                                onMouseDown={() => handleSelect(point)}
+                                role="option"
+                                aria-selected={
+                                  selectedLocation?.location === point.location
+                                }
+                              >
+                                <div className="flex gap-5">
+                                  <div className="flex items-center gap-1">
+                                    <Image
+                                      src="/marker_parcel_locker.svg"
+                                      width={15}
+                                      height={15}
+                                      alt="parcel sign"
+                                    ></Image>
+                                    <span className="text-xs font-semibold">
+                                      {point.location}
+                                    </span>
+                                  </div>
+                                  <div className="flex flex-col gap-1">
+                                    <span className="text-gray-500 text-xs   font-normal">
+                                      Paczkomat®{" "}
+                                    </span>
+                                    <span className="font-medium text-xs">
+                                      {point.subLocation}
+                                    </span>
+                                  </div>
+                                </div>
+                              </li>
+                            ))
+                          )}
                         </ul>
                       )}
                     </div>
@@ -592,7 +756,7 @@ export default function Sample() {
                 {transferShipment.map((option, i) => (
                   <label
                     key={option.label}
-                    className={`lg:w-1/2 flex flex-col items-center justify-center lg:block rounded h-[60px] lg:h-auto text-center py-2 cursor-pointer font-medium bg-white text-[12px] transition
+                    className={`lg:w-1/2 flex flex-col items-center justify-center lg:block rounded h-[60px] lg:h-auto text-center py-2 px-1 cursor-pointer font-medium bg-white text-[12px] transition
                       ${
                         selectedTransferShipment === option.value
                           ? "border-yellow-400 border-2 text-gray-800"
@@ -700,17 +864,163 @@ export default function Sample() {
                 <p className="text-gray-400 text-[10px] font-medium">
                   Zasady naliczania opłat za nadanie przesyłki kurierem
                 </p>
-                <Image src="/info.svg" height={15} width={15} alt="info"/>
+                <Image src="/info.svg" height={15} width={15} alt="info" />
               </div>
             </div>
           </div>
 
-          <button
-            onClick={onSubmit}
-            className="bg-[#FCC905] w-full lg:w-1/2 mx-auto hover:opacity-70 mt-10 mb-5 text-zinc-800  py-2 text-sm rounded-md font-semibold cursor-pointer"
-          >
-            Opłać
-          </button>
+          <div className="flex flex-col lg:flex-row items-center gap-5 w-full mt-10 mb-10">
+            <button
+              className="bg-[#fff] border border-[#FCC905] w-full lg:w-1/2 mx-auto hover:opacity-70 text-zinc-800 py-2 text-sm rounded-md font-semibold cursor-pointer"
+              onClick={handleVoucherOpen}
+            >
+              Wykorzystaj kod rabatowy
+            </button>
+
+            {isVoucherOpen && (
+              <div className="fixed inset-0 bg-black/40 bg-opacity-40 flex items-center justify-center z-50">
+                <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full relative">
+                  <button
+                    className="absolute top-2 right-2 text-xl cursor-pointer font-bold text-black hover:text-black"
+                    onClick={handleVoucherClose}
+                  >
+                    &times;
+                  </button>
+                  <Image
+                    src="/inpost-logo.svg"
+                    width={70}
+                    height={70}
+                    alt="inpost logo"
+                  />
+                  {isLoading ? (
+                    <div className="flex justify-center items-center py-10">
+                      {/* You can use a spinner SVG, pulsating dots, etc. Here's a simple example: */}
+                      <svg
+                        className="animate-spin h-10 w-10 mr-3 text-[#FCC905]"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v8z"
+                        />
+                      </svg>
+                      <span className="text-black font-semibold ml-3">
+                        Processing...
+                      </span>
+                    </div>
+                  ) : voucherSubmitted ? (
+                    <div className="flex justify-center flex-col items-center mb-5 gap-3">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0px"
+                        y="0px"
+                        width="100"
+                        height="100"
+                        viewBox="0 0 32 32"
+                      >
+                        <linearGradient
+                          id="ONeHyQPNLkwGmj04dE6Soa_2Tv2g4T4Wtu0_gr1"
+                          x1="16"
+                          x2="16"
+                          y1="2.888"
+                          y2="29.012"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop offset="0" stop-color="#36eb69"></stop>
+                          <stop offset="1" stop-color="#1bbd49"></stop>
+                        </linearGradient>
+                        <circle
+                          cx="16"
+                          cy="16"
+                          r="13"
+                          fill="url(#ONeHyQPNLkwGmj04dE6Soa_2Tv2g4T4Wtu0_gr1)"
+                        ></circle>
+                        <linearGradient
+                          id="ONeHyQPNLkwGmj04dE6Sob_2Tv2g4T4Wtu0_gr2"
+                          x1="16"
+                          x2="16"
+                          y1="3"
+                          y2="29"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop offset="0" stop-opacity=".02"></stop>
+                          <stop offset="1" stop-opacity=".15"></stop>
+                        </linearGradient>
+                        <path
+                          fill="url(#ONeHyQPNLkwGmj04dE6Sob_2Tv2g4T4Wtu0_gr2)"
+                          d="M16,3.25c7.03,0,12.75,5.72,12.75,12.75 S23.03,28.75,16,28.75S3.25,23.03,3.25,16S8.97,3.25,16,3.25 M16,3C8.82,3,3,8.82,3,16s5.82,13,13,13s13-5.82,13-13S23.18,3,16,3 L16,3z"
+                        ></path>
+                        <g opacity=".2">
+                          <linearGradient
+                            id="ONeHyQPNLkwGmj04dE6Soc_2Tv2g4T4Wtu0_gr3"
+                            x1="16.502"
+                            x2="16.502"
+                            y1="11.26"
+                            y2="20.743"
+                            gradientUnits="userSpaceOnUse"
+                          >
+                            <stop offset="0" stop-opacity=".1"></stop>
+                            <stop offset="1" stop-opacity=".7"></stop>
+                          </linearGradient>
+                          <path
+                            fill="url(#ONeHyQPNLkwGmj04dE6Soc_2Tv2g4T4Wtu0_gr3)"
+                            d="M21.929,11.26 c-0.35,0-0.679,0.136-0.927,0.384L15,17.646l-2.998-2.998c-0.248-0.248-0.577-0.384-0.927-0.384c-0.35,0-0.679,0.136-0.927,0.384 c-0.248,0.248-0.384,0.577-0.384,0.927c0,0.35,0.136,0.679,0.384,0.927l3.809,3.809c0.279,0.279,0.649,0.432,1.043,0.432 c0.394,0,0.764-0.153,1.043-0.432l6.813-6.813c0.248-0.248,0.384-0.577,0.384-0.927c0-0.35-0.136-0.679-0.384-0.927 C22.608,11.396,22.279,11.26,21.929,11.26L21.929,11.26z"
+                          ></path>
+                        </g>
+                        <path
+                          fill="#fff"
+                          d="M10.325,14.825L10.325,14.825c0.414-0.414,1.086-0.414,1.5,0L15,18l6.179-6.179	c0.414-0.414,1.086-0.414,1.5,0l0,0c0.414,0.414,0.414,1.086,0,1.5l-6.813,6.813c-0.478,0.478-1.254,0.478-1.732,0l-3.809-3.809	C9.911,15.911,9.911,15.239,10.325,14.825z"
+                        ></path>
+                      </svg>
+                      <span className="text-black font-semibold">
+                        Payment Successful
+                      </span>
+                    </div>
+                  ) : (
+                    <>
+                      <h2 className="text-lg font-semibold mb-3 text-black">
+                        Enter Voucher Code
+                      </h2>
+                      <form onSubmit={handleVoucherSubmit}>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 text-sm border border-gray-400 focus:border-orange-300 focus:outline-none text-black rounded mb-3"
+                          placeholder="Enter voucher code"
+                          value={voucher}
+                          onChange={handleVoucherChange}
+                          required
+                          minLength={8}
+                        />
+                        <button
+                          type="submit"
+                          className="bg-[#FCC905] cursor-pointer text-zinc-800 font-semibold px-4 py-2 rounded w-full hover:opacity-80"
+                        >
+                          Submit
+                        </button>
+                      </form>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <button
+              onClick={onSubmit}
+              className="bg-[#FCC905] w-full lg:w-1/2 mx-auto hover:opacity-70 text-zinc-800  py-2 text-sm rounded-md font-semibold cursor-pointer"
+            >
+              Opłać
+            </button>
+          </div>
         </div>
       </div>
       <Footer />

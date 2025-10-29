@@ -12,7 +12,7 @@ type ShipmentType = {
   Status: string;
   createdAt: string;
   updatedAt: string;
-  email: string;
+  loggedUser: string;
   methodOfAssignment: string;
   pickupMethod: string;
   recipient: string;
@@ -33,7 +33,7 @@ export default function Shipments() {
   const [user, setUser] = useState({
     typeOfShipment: "Parcel Lockers® 24/7",
     packageSize: "A",
-    email: "",
+    loggedUser: "",
     telephone: "",
     name: "",
     companyName: "",
@@ -49,11 +49,11 @@ export default function Shipments() {
     transferShipment: "I will send it at the Paczkomat® slot machine",
   });
 
-  const fetchShipments = async (email: string | null) => {
-    if (!email) return; // Early exit if email is null
+  const fetchShipments = async (loggedUser: string | null) => {
+    if (!loggedUser) return; // Early exit if email is null
 
     try {
-      const response = await fetch(`/api/users/shipments?email=${email}`);
+      const response = await fetch(`/api/users/shipments?email=${loggedUser}`);
 
       const data = await response.json();
       console.log(data);
@@ -99,7 +99,7 @@ export default function Shipments() {
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
-    if (email) setUser({ ...user, email: email });
+    if (email) setUser({ ...user, loggedUser: email });
     fetchShipments(email);
   }, []);
 

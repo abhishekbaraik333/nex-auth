@@ -29,9 +29,14 @@ export default function SignUp() {
   });
 
   const onSignUp = async () => {
+
+    if (!user.email || !user.Imie || !user.Telefon || !user.Nazwisko || !user.Haslo) {
+      alert("Please fill the required fields before submitting.");
+      return; // prevent submit
+    }
     try {
       const response = await axios.post("/api/users/signup", user);
-        localStorage.setItem("userEmail", user.email); // Save email to localStorage
+      localStorage.setItem("userEmail", user.email); // Save email to localStorage
       router.push("/sample");
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -131,9 +136,7 @@ export default function SignUp() {
                   className="bg-white w-full transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
                   id="password"
                   value={user.Imie}
-                  onChange={(e) =>
-                    setUser({ ...user, Imie: e.target.value })
-                  }
+                  onChange={(e) => setUser({ ...user, Imie: e.target.value })}
                 />
               </div>
             </div>

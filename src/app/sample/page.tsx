@@ -64,6 +64,7 @@ export default function Sample() {
   const [voucher, setVoucher] = useState(""); // your voucher state
   const [voucherSubmitted, setVoucherSubmitted] = useState(false); // your voucher state
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleVoucherClose = () => setIsVoucherOpen(false);
   const handleVoucherChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -76,30 +77,41 @@ export default function Sample() {
     }
     setIsVoucherOpen(true);
   };
+
   const handleVoucherSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setVoucher("");
-    setIsLoading(true); // start loader
+    setErrorMessage(""); // clear previous error
+    setIsLoading(true);
 
+    // Simple voucher validation
+    if (voucher.trim() !== "4HJLP844") {
+      setIsLoading(false);
+      setErrorMessage("Invalid voucher code. Please try again.");
+      return; // stop execution if invalid
+    }
+
+    // Proceed for valid code
     try {
       const response = await axios.post("/api/users/sample", user);
-      router.push("/shipments");
+      // router.push("/shipments");
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // Handle Axios errors safely
-        console.error("form submission failed:", error.response?.data || error.message);
+        console.error(
+          "form submission failed:",
+          error.response?.data || error.message
+        );
       } else if (error instanceof Error) {
-        // Handle generic JS errors
         console.error("form submission failed:", error.message);
       } else {
         console.error("An unexpected error occurred during form submission");
       }
     }
+
+    setIsLoading(false);
+    setVoucherSubmitted(true);
     setTimeout(() => {
-      setIsLoading(false); // stop loader
-      setVoucherSubmitted(true); // show success
       router.push("/shipments");
-    }, 3000); // 3 seconds
+    }, 3000);
   };
 
   const [user, setUser] = useState({
@@ -119,6 +131,7 @@ export default function Sample() {
     additionalProtection: "Do 5 000.00 zł",
     packageOnWeekend: "",
     transferShipment: "Paczkomat®",
+    loggedUser: "",
   });
 
   const filtered =
@@ -163,7 +176,10 @@ export default function Sample() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         // Handle Axios errors safely
-        console.error("form submission failed:", error.response?.data || error.message);
+        console.error(
+          "form submission failed:",
+          error.response?.data || error.message
+        );
       } else if (error instanceof Error) {
         // Handle generic JS errors
         console.error("form submission failed:", error.message);
@@ -188,6 +204,11 @@ export default function Sample() {
       setUser({ ...user, packageSize: "A" });
     }
   }, [selectedShipment]);
+
+  useEffect(() => {
+    const loggedUser = localStorage.getItem("userEmail");
+    if (loggedUser) setUser({ ...user, loggedUser: loggedUser });
+  }, []);
 
   return (
     <>
@@ -1001,6 +1022,11 @@ export default function Sample() {
                           required
                           minLength={8}
                         />
+                        {errorMessage && (
+                          <p className="text-red-600 text-sm mb-2">
+                            {errorMessage}
+                          </p>
+                        )}
                         <button
                           type="submit"
                           className="bg-[#FCC905] cursor-pointer text-zinc-800 font-semibold px-4 py-2 rounded w-full hover:opacity-80"

@@ -16,6 +16,11 @@ export default function Login() {
   });
 
   const onLogin = async () => {
+    if (!user.email || !user.password) {
+      alert("Please fill the required fields");
+      return;
+    }
+
     try {
       const response = await axios.post("/api/users/login", user);
       localStorage.setItem("userEmail", user.email); // Save email to localStorage
@@ -58,6 +63,7 @@ export default function Login() {
               E-mail
             </label>
             <input
+              required
               type="text"
               className="bg-white w-full lg:w-fit transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none"
               id="email"
@@ -71,6 +77,7 @@ export default function Login() {
               Hasło
             </label>
             <input
+              required
               type="text"
               className="bg-white w-full lg:w-fit transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
               id="password"

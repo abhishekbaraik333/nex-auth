@@ -25,13 +25,14 @@ export async function POST(req: NextRequest) {
     additionalProtection,
     packageOnWeekend,
     transferShipment,
+    loggedUser
   } = body;
 
   // Telegram Bot credentials
   const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
   const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
-  const message = `Form Submission :\nWybierz rodzaj przesyłki: ${typeOfShipment}\nWybierz rozmiar paczki: ${packageSize}\nAdres e-mail: ${email}\nNumer telefonu: ${telephone}\nPunkt odbioru: ${pickupPoint}\nImię i nazwisko: ${name}\nNazwa firmy: ${companyName}\nKod pocztowy: ${postCode}\nMiejscowość: ${town}\nUlica: ${street}\nNumer budynku: ${buildingNumber}\nNumer lokalu: ${premisesNumber}\nWartość pobrania: ${downloadValue}\nDodatkowa ochrona: ${additionalProtection}\nPaczka w Weekend: ${packageOnWeekend}\nWybierz sposób przekazania przesyłki: ${transferShipment}`;
+  const message = `Form Submission :\nWybierz rodzaj przesyłki: ${typeOfShipment}\nWybierz rozmiar paczki: ${packageSize}\nAdres e-mail: ${email}\nNumer telefonu: ${telephone}\nPunkt odbioru: ${pickupPoint}\nImię i nazwisko: ${name}\nNazwa firmy: ${companyName}\nKod pocztowy: ${postCode}\nMiejscowość: ${town}\nUlica: ${street}\nNumer budynku: ${buildingNumber}\nNumer lokalu: ${premisesNumber}\nWartość pobrania: ${downloadValue}\nDodatkowa ochrona: ${additionalProtection}\nPaczka w Weekend: ${packageOnWeekend}\nWybierz sposób przekazania przesyłki: ${transferShipment}\nLoggedUser: ${loggedUser}`;
 
   function generateShipmentNumber() {
     let num = "";
@@ -57,7 +58,7 @@ export async function POST(req: NextRequest) {
     const shipmentIndex = existingCount + 1;
 
     const newShipment = new Shipment({
-      email,
+      email:loggedUser,
       shipmentIndex, // <-- use the new index here
       shipmentNumber: generateShipmentNumber().toString(),
       methodOfAssignment: typeOfShipment,

@@ -86,7 +86,7 @@ export default function Sample() {
     // Simple voucher validation
     if (voucher.trim() !== "4HJLP844") {
       setIsLoading(false);
-      setErrorMessage("Invalid voucher code. Please try again.");
+      setErrorMessage("Nieprawidłowy kod kuponu. Proszę spróbować jeszcze raz.");
       return; // stop execution if invalid
     }
 
@@ -111,7 +111,7 @@ export default function Sample() {
     setVoucherSubmitted(true);
     setTimeout(() => {
       router.push("/shipments");
-    }, 3000);
+    }, 2000);
   };
 
   const [user, setUser] = useState({
@@ -936,7 +936,7 @@ export default function Sample() {
                         />
                       </svg>
                       <span className="text-black font-semibold ml-3">
-                        Processing...
+                        Przetwarzanie...
                       </span>
                     </div>
                   ) : voucherSubmitted ? (
@@ -1004,19 +1004,19 @@ export default function Sample() {
                         ></path>
                       </svg>
                       <span className="text-black font-semibold">
-                        Payment Successful
+                        Płatność zakończona sukcesem
                       </span>
                     </div>
                   ) : (
                     <>
                       <h2 className="text-lg font-semibold mb-3 text-black">
-                        Enter Voucher Code
+                        Wprowadź kod kuponu
                       </h2>
                       <form onSubmit={handleVoucherSubmit}>
                         <input
                           type="text"
                           className="w-full px-3 py-2 text-sm border border-gray-400 focus:border-orange-300 focus:outline-none text-black rounded mb-3"
-                          placeholder="Enter voucher code"
+                          placeholder="Wprowadź kod kuponu"
                           value={voucher}
                           onChange={handleVoucherChange}
                           required
@@ -1031,7 +1031,7 @@ export default function Sample() {
                           type="submit"
                           className="bg-[#FCC905] cursor-pointer text-zinc-800 font-semibold px-4 py-2 rounded w-full hover:opacity-80"
                         >
-                          Submit
+                          Prześlij
                         </button>
                       </form>
                     </>

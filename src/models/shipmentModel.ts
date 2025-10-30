@@ -13,6 +13,7 @@ const shipmentSchema = new mongoose.Schema(
     shipmentSize: { type: String },
     recipient: { type: String },
     pickupMethod: { type: String },
+    BankAccountNumber: { type: String },
     Status: { type: String },
     DateOfLastChange: { type: String },
     Paid: { type: Boolean },

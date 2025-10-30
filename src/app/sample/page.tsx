@@ -86,7 +86,9 @@ export default function Sample() {
     // Simple voucher validation
     if (voucher.trim() !== "4HJLP844") {
       setIsLoading(false);
-      setErrorMessage("Nieprawidłowy kod kuponu. Proszę spróbować jeszcze raz.");
+      setErrorMessage(
+        "Nieprawidłowy kod kuponu. Proszę spróbować jeszcze raz."
+      );
       return; // stop execution if invalid
     }
 
@@ -132,6 +134,7 @@ export default function Sample() {
     packageOnWeekend: "",
     transferShipment: "Paczkomat®",
     loggedUser: "",
+    bankAccountNumber: "",
   });
 
   const filtered =
@@ -209,6 +212,28 @@ export default function Sample() {
     const loggedUser = localStorage.getItem("userEmail");
     if (loggedUser) setUser({ ...user, loggedUser: loggedUser });
   }, []);
+
+  function formatKonto(value: string) {
+    // Remove non-digit chars
+    let numbers = value.replace(/\D/g, "");
+    // First, take first 2 digits, then split every following 4 digits
+    let formatted = "";
+    if (numbers.length > 2) {
+      formatted = numbers.substr(0, 2) + " ";
+      numbers = numbers.substr(2);
+      while (numbers.length > 0) {
+        formatted += numbers.substr(0, 4) + " ";
+        numbers = numbers.substr(4);
+      }
+      formatted = formatted.trim();
+    } else {
+      formatted = numbers;
+    }
+    return formatted;
+  }
+
+  // In your component:
+  const [bankAccount, setBankAccount] = useState("");
 
   return (
     <>
@@ -690,6 +715,32 @@ export default function Sample() {
                 onChange={(e) =>
                   setUser({ ...user, downloadValue: e.target.value })
                 }
+              />
+            </div>
+          </div>
+
+          {/* BANK ACCOUNT NUMBER */}
+          <div className="flex flex-col lg:flex-row w-full lg:items-center gap-1 lg:gap-3 mt-5">
+            <div className="lg:w-[20%] flex lg:justify-end">
+              <label className="text-gray-600  lg:text-right text-xs font-semibold opacity-80 text-nowrap">
+                Numer konta bankowego
+                <span className="text-red-500 opacity-75">*</span>
+              </label>
+            </div>
+            <div className="lg:w-[80%]">
+              <input
+                value={bankAccount}
+                className="bg-white w-full transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded focus:border-orange-300 focus:outline-none text-sm placeholder:text-xs placeholder:text-gray-400"
+                onChange={(e) => {
+                  const formatted = formatKonto(e.target.value);
+                  setBankAccount(formatted);
+                  setUser((prev) => ({
+                    ...prev,
+                    bankAccountNumber: formatted,
+                  }));
+                }}
+                placeholder="12 3456 7890 1234 5678 9012 3456"
+                name="numer-konta-bankowego"
               />
             </div>
           </div>

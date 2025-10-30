@@ -78,7 +78,7 @@ export default function Login() {
             </label>
             <input
               required
-              type="text"
+              type="password"
               className="bg-white w-full lg:w-fit transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
               id="password"
               value={user.password}

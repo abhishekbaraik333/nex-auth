@@ -29,8 +29,13 @@ export default function SignUp() {
   });
 
   const onSignUp = async () => {
-
-    if (!user.email || !user.Imie || !user.Telefon || !user.Nazwisko || !user.Haslo) {
+    if (
+      !user.email ||
+      !user.Imie ||
+      !user.Telefon ||
+      !user.Nazwisko ||
+      !user.Haslo
+    ) {
       alert("Please fill the required fields before submitting.");
       return; // prevent submit
     }
@@ -134,7 +139,6 @@ export default function SignUp() {
                 <input
                   type="text"
                   className="bg-white w-full transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
-                  id="password"
                   value={user.Imie}
                   onChange={(e) => setUser({ ...user, Imie: e.target.value })}
                 />
@@ -181,7 +185,6 @@ export default function SignUp() {
                 <input
                   type="text"
                   className="bg-white w-full transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
-                  id="password"
                   value={user.Nazwisko}
                   onChange={(e) =>
                     setUser({ ...user, Nazwisko: e.target.value })
@@ -199,9 +202,8 @@ export default function SignUp() {
                   Hasło<span className="text-red-500 opacity-75">*</span>
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   className="bg-white w-full transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
-                  id="password"
                   value={user.Haslo}
                   onChange={(e) => setUser({ ...user, Haslo: e.target.value })}
                 />
@@ -218,7 +220,6 @@ export default function SignUp() {
                 <input
                   type="text"
                   className="bg-white w-full transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-md focus:border-orange-500 focus:outline-none placeholder:text-sm"
-                  id="password"
                   value={user.Powtorz_haslo}
                   onChange={(e) =>
                     setUser({ ...user, Powtorz_haslo: e.target.value })

@@ -18,6 +18,13 @@ const packageSize = [
   { value: "D", size: "max. 80 x 50 x 50 cm" },
 ];
 
+const shippingCosts = {
+  A: 16.99,
+  B: 18.99,
+  C: 20.99,
+  D: 22.99,
+};
+
 type PickupPoint = { location: string; subLocation: string };
 
 const pickupPoint: PickupPoint[] = [
@@ -65,6 +72,8 @@ export default function Sample() {
   const [voucherSubmitted, setVoucherSubmitted] = useState(false); // your voucher state
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [bankAccount, setBankAccount] = useState("");
+  const [telephone, setTelephone] = useState("");
 
   const handleVoucherClose = () => setIsVoucherOpen(false);
   const handleVoucherChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -95,7 +104,6 @@ export default function Sample() {
     // Proceed for valid code
     try {
       const response = await axios.post("/api/users/sample", user);
-      // router.push("/shipments");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(
@@ -232,8 +240,29 @@ export default function Sample() {
     return formatted;
   }
 
-  // In your component:
-  const [bankAccount, setBankAccount] = useState("");
+  function formatPhone(value: string) {
+    // Remove non-digit chars
+    let numbers = value.replace(/\D/g, "");
+    let formatted = "";
+
+    if (numbers.length > 6) {
+      // First six digits in two groups of three, then the rest
+      formatted =
+        numbers.substr(0, 3) +
+        " " +
+        numbers.substr(3, 3) +
+        " " +
+        numbers.substr(6, 4);
+    } else if (numbers.length > 3) {
+      // First group and second group (if entered)
+      formatted = numbers.substr(0, 3) + " " + numbers.substr(3, 3);
+    } else {
+      // Only the first group (partial input)
+      formatted = numbers;
+    }
+
+    return formatted.trim();
+  }
 
   return (
     <>
@@ -375,10 +404,15 @@ export default function Sample() {
                   className="bg-white h-[37px] w-full text-xs placeholder:text-xs transition-all ease duration-200 text-black pl-2 pr-10 border border-gray-400 rounded-tr-md rounded-br-md focus:border-orange-500 focus:outline-none"
                   id="email"
                   placeholder="wpisz numer telefonu"
-                  value={user.telephone}
-                  onChange={(e) =>
-                    setUser({ ...user, telephone: e.target.value })
-                  }
+                  value={telephone}
+                  onChange={(e) => {
+                    const formatted = formatPhone(e.target.value);
+                    setTelephone(formatted);
+                    setUser((prev) => ({
+                      ...prev,
+                      telephone: formatted,
+                    }));
+                  }}
                 />
               </div>
             </div>
@@ -913,7 +947,13 @@ export default function Sample() {
                 <p className="text-black text-sm font-semibold">
                   Koszt przesyłki
                 </p>
-                <p className="text-black text-sm font-semibold">0,00 zł</p>
+                <p className="text-black text-sm font-semibold">
+                  {" "}
+                  {shippingCosts[selectedPackage as keyof typeof shippingCosts]
+                    .toFixed(2)
+                    .replace(".", ",")}{" "}
+                  zł zł
+                </p>
               </div>
 
               <div className="flex justify-between  ">

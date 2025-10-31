@@ -242,7 +242,7 @@ export default function Sample() {
 
   function formatPhone(value: string) {
     // Remove non-digit chars
-    let numbers = value.replace(/\D/g, "");
+    const  numbers = value.replace(/\D/g, "");
     let formatted = "";
 
     if (numbers.length > 6) {

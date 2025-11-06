@@ -223,14 +223,8 @@ export default function Shipments() {
                     <td className="py-3 px-2 text-center hidden lg:table-cell ">
                       {item.pickupMethod}
                     </td>
-                    <td className="py-3 px-2 hidden lg:table-cell">
-                      <select
-                        className="border border-gray-400 rounded px-2 py-1 text-sm"
-                        defaultValue={item.shipmentSize}
-                      >
-                        <option value="A">{item.shipmentSize}</option>
-                      
-                      </select>
+                    <td className="py-3 px-2 hidden lg:table-cell text-center font-semibold ">
+                      {item.shipmentSize}
                     </td>
                     <td className="py-3 px-2">{item.recipient}</td>
                     <td className="py-3 px-2 hidden lg:table-cell">

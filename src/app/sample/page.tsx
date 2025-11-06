@@ -223,7 +223,7 @@ export default function Sample() {
 
   function formatKonto(value: string) {
     // Remove non-digit chars
-    const numbers = value.replace(/\D/g, "");
+    let numbers = value.replace(/\D/g, "");
     // First, take first 2 digits, then split every following 4 digits
     let formatted = "";
     if (numbers.length > 2) {
@@ -242,7 +242,7 @@ export default function Sample() {
 
 function formatPhone(value: string) {
   // Remove non-digit chars
-  let numbers = value.replace(/\D/g, "").slice(0, 9); // limit to 9 digits
+  const numbers = value.replace(/\D/g, "").slice(0, 9); // limit to 9 digits
   let formatted = "";
 
   if (numbers.length > 6) {

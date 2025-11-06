@@ -540,7 +540,7 @@ export default function NavAuth() {
             </div>
 
             <div className="lg:hidden flex flex-col items-center gap-2 w-full">
-              <Link
+              <button
                 onClick={logout}
                 className="bg-[#ffcb04] text-black text-base font-medium w-full p-1 flex items-center justify-between"
               >
@@ -562,7 +562,7 @@ export default function NavAuth() {
                   <path d="M21 12H9" />
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                 </svg>
-              </Link>
+              </button>
             </div>
           </nav>
         </div>

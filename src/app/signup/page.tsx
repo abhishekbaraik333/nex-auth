@@ -87,8 +87,8 @@ export default function SignUp() {
     };
 
   function formatPhone(value: string) {
-    // Remove non-digit chars
-    let numbers = value.replace(/\D/g, "").slice(0, 9); // limit to 9 digits
+    // Remove non-digit characters
+    const numbers = value.replace(/\D/g, "").slice(0, 9); // limit to 9 digits
     let formatted = "";
 
     if (numbers.length > 6) {

@@ -22,7 +22,7 @@ const shippingCosts = {
   A: 16.99,
   B: 18.99,
   C: 20.99,
-  D: 22.99,
+  D: 23.99,
 };
 
 type PickupPoint = { location: string; subLocation: string };
@@ -240,29 +240,30 @@ export default function Sample() {
     return formatted;
   }
 
-  function formatPhone(value: string) {
-    // Remove non-digit chars
-    const  numbers = value.replace(/\D/g, "");
-    let formatted = "";
+function formatPhone(value: string) {
+  // Remove non-digit chars
+  let numbers = value.replace(/\D/g, "").slice(0, 9); // limit to 9 digits
+  let formatted = "";
 
-    if (numbers.length > 6) {
-      // First six digits in two groups of three, then the rest
-      formatted =
-        numbers.substr(0, 3) +
-        " " +
-        numbers.substr(3, 3) +
-        " " +
-        numbers.substr(6, 4);
-    } else if (numbers.length > 3) {
-      // First group and second group (if entered)
-      formatted = numbers.substr(0, 3) + " " + numbers.substr(3, 3);
-    } else {
-      // Only the first group (partial input)
-      formatted = numbers;
-    }
-
-    return formatted.trim();
+  if (numbers.length > 6) {
+    // Format as 3+3+3
+    formatted =
+      numbers.substr(0, 3) +
+      " " +
+      numbers.substr(3, 3) +
+      " " +
+      numbers.substr(6, 3);
+  } else if (numbers.length > 3) {
+    // Format as 3+3
+    formatted = numbers.substr(0, 3) + " " + numbers.substr(3, 3);
+  } else {
+    // Just the first group
+    formatted = numbers;
   }
+
+  return formatted.trim();
+}
+
 
   return (
     <>

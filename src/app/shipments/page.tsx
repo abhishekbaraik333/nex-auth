@@ -166,7 +166,7 @@ export default function Shipments() {
                 <th className="py-3 px-2 font-semibold hidden lg:table-cell ">
                   Data ostatniej zmiany statusu
                 </th>
-                <th className="py-3 px-2 font-semibold">Akcje</th>
+                {/* <th className="py-3 px-2 font-semibold">Akcje</th> */}
               </tr>
             </thead>
             <tbody>
@@ -228,10 +228,8 @@ export default function Shipments() {
                         className="border border-gray-400 rounded px-2 py-1 text-sm"
                         defaultValue={item.shipmentSize}
                       >
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
+                        <option value="A">{item.shipmentSize}</option>
+                      
                       </select>
                     </td>
                     <td className="py-3 px-2">{item.recipient}</td>
@@ -280,9 +278,9 @@ export default function Shipments() {
                       {formatDate(item.updatedAt)}
                     </td>
 
-                    <td className="py-3 px-2">
+                    {/* <td className="py-3 px-2">
                       <div className="relative flex items-center justify-end h-8">
-                        {/* Dropdown Button */}
+                     
                         <button
                           className="bg-yellow-400 rounded-md px-2 py-2 border border-gray-300 focus:outline-none"
                           onClick={() =>
@@ -298,7 +296,6 @@ export default function Shipments() {
                           </span>
                         </button>
 
-                        {/* Popup menu (left aligned to button) */}
                         {openDropdownIdx === idx && (
                           <div
                             ref={menuRef}
@@ -337,7 +334,7 @@ export default function Shipments() {
                               <span className="text-sm"> Opłać </span>
                             </button>
                             <button className="cursor-pointer flex items-center justify-center gap-2 py-2 text-gray-900 hover:bg-gray-300 transition">
-                              {/* Cancel Icon */}
+                             
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="20"
@@ -358,7 +355,7 @@ export default function Shipments() {
                           </div>
                         )}
                       </div>
-                    </td>
+                    </td> */}
                   </tr>
                 ))
               ) : (

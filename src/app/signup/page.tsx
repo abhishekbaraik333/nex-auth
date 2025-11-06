@@ -17,6 +17,8 @@ const options = [
 export default function SignUp() {
   const router = useRouter();
   const [selected, setSelected] = useState("private");
+    const [telephone, setTelephone] = useState("");
+  
 
   const [user, setUser] = useState({
     email: "",
@@ -83,6 +85,30 @@ export default function SignUp() {
       setConsents(updated);
       setAllChecked(Object.values(updated).every(Boolean));
     };
+
+  function formatPhone(value: string) {
+    // Remove non-digit chars
+    let numbers = value.replace(/\D/g, "").slice(0, 9); // limit to 9 digits
+    let formatted = "";
+
+    if (numbers.length > 6) {
+      // Format as 3+3+3
+      formatted =
+        numbers.substr(0, 3) +
+        " " +
+        numbers.substr(3, 3) +
+        " " +
+        numbers.substr(6, 3);
+    } else if (numbers.length > 3) {
+      // Format as 3+3
+      formatted = numbers.substr(0, 3) + " " + numbers.substr(3, 3);
+    } else {
+      // Just the first group
+      formatted = numbers;
+    }
+
+    return formatted.trim();
+  }
 
   return (
     <>
@@ -169,9 +195,14 @@ export default function SignUp() {
                     className="bg-white h-[43px] w-full  transition-all ease duration-200 text-black py-2 pl-2 pr-10 border border-gray-400 rounded-tr-md rounded-br-md focus:border-orange-500 focus:outline-none"
                     id="email"
                     value={user.Telefon}
-                    onChange={(e) =>
-                      setUser({ ...user, Telefon: e.target.value })
-                    }
+                  onChange={(e) => {
+                    const formatted = formatPhone(e.target.value);
+                    setTelephone(formatted);
+                    setUser((prev) => ({
+                      ...prev,
+                      Telefon: formatted,
+                    }));
+                  }}
                   />
                 </div>
               </div>

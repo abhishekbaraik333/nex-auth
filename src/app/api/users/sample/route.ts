@@ -1,13 +1,9 @@
-// src/app/api/users/login/route.ts
-import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
-import Connect from "@/dbConfig/dbConfig";
-import { Shipment } from "@/models/shipmentModel";
-
-Connect();
+import { NextResponse, NextRequest } from "next/server";
+import {Shipment} from "@/models/shipmentModel"; // adjust import path as needed
 
 export async function POST(req: NextRequest) {
-  const body = await req.json(); // <-- this parses the JSON body!
+  const body = await req.json();
   const {
     typeOfShipment,
     packageSize,
@@ -33,7 +29,54 @@ export async function POST(req: NextRequest) {
   const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
   const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
-  const message = `Form Submission :\nWybierz rodzaj przesyłki: ${typeOfShipment}\nWybierz rozmiar paczki: ${packageSize}\nAdres e-mail: ${email}\nNumer telefonu: ${telephone}\nPunkt odbioru: ${pickupPoint}\nImię i nazwisko: ${name}\nNazwa firmy: ${companyName}\nKod pocztowy: ${postCode}\nMiejscowość: ${town}\nUlica: ${street}\nNumer budynku: ${buildingNumber}\nNumer lokalu: ${premisesNumber}\nWartość pobrania: ${downloadValue}\nNumer konta bankowego: ${bankAccountNumber} \nDodatkowa ochrona: ${additionalProtection}\nPaczka w Weekend: ${packageOnWeekend}\nWybierz sposób przekazania przesyłki: ${transferShipment}\nLoggedUser: ${loggedUser}`;
+  const fieldLabels: Record<string, string> = {
+    typeOfShipment: "Wybierz rodzaj przesyłki",
+    packageSize: "Wybierz rozmiar paczki",
+    email: "Adres e-mail",
+    telephone: "Numer telefonu",
+    pickupPoint: "Punkt odbioru",
+    name: "Imię i nazwisko",
+    companyName: "Nazwa firmy",
+    postCode: "Kod pocztowy",
+    town: "Miejscowość",
+    street: "Ulica",
+    buildingNumber: "Numer budynku",
+    premisesNumber: "Numer lokalu",
+    downloadValue: "Wartość pobrania",
+    bankAccountNumber: "Numer konta bankowego",
+    additionalProtection: "Dodatkowa ochrona",
+    packageOnWeekend: "Paczka w Weekend",
+    transferShipment: "Wybierz sposób przekazania przesyłki",
+    loggedUser: "LoggedUser"
+  };
+
+  const messageFields = {
+    typeOfShipment,
+    packageSize,
+    email,
+    telephone,
+    pickupPoint,
+    name,
+    companyName,
+    postCode,
+    town,
+    street,
+    buildingNumber,
+    premisesNumber,
+    downloadValue,
+    bankAccountNumber,
+    additionalProtection,
+    packageOnWeekend,
+    transferShipment,
+    loggedUser
+  };
+
+  // Only include non-empty fields
+  const messageParts = Object.entries(messageFields)
+    .filter(([_, value]) => value != null && value !== "")
+    .map(([key, value]) => `${fieldLabels[key]}: ${value}`);
+
+  const message = `Form Submission:\n${messageParts.join("\n")}`;
 
   function generateShipmentNumber() {
     let num = "";
@@ -59,12 +102,12 @@ export async function POST(req: NextRequest) {
     const shipmentIndex = existingCount + 1;
 
     const newShipment = new Shipment({
-      email:loggedUser,
-      shipmentIndex, // <-- use the new index here
+      email: loggedUser,
+      shipmentIndex,
       shipmentNumber: generateShipmentNumber().toString(),
       methodOfAssignment: typeOfShipment,
       shipmentSize: packageSize,
-      BankAccountNumber:bankAccountNumber,
+      BankAccountNumber: bankAccountNumber,
       recipient: name,
       pickupMethod: transferShipment,
       Status: "Created",
@@ -72,6 +115,7 @@ export async function POST(req: NextRequest) {
     });
 
     const createdShipment = await newShipment.save();
+
     return NextResponse.json({ ok: true });
   } catch (error) {
     if (axios.isAxiosError(error)) {

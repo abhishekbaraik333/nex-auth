@@ -223,7 +223,7 @@ export default function Shipments() {
                     <td className="py-3 px-2 text-center hidden lg:table-cell ">
                       {item.pickupMethod}
                     </td>
-                    <td className="py-3 px-2 hidden lg:table-cell text-center font-semibold ">
+                    <td className="py-3 px-2 hidden lg:table-cell text-center font-medium text-base ">
                       {item.shipmentSize}
                     </td>
                     <td className="py-3 px-2">{item.recipient}</td>

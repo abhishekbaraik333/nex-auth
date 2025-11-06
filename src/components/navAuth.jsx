@@ -23,7 +23,7 @@ export default function NavAuth() {
   return (
     <>
       {!menuOpen && (
-        <nav className="w-full lg:px-[10%] px-4 pt-2 pb-10 lg:pb-0 flex items-start justify-between bg-white bg-opacity-70 fixed top-0 left-0 z-50 shadow-xl">
+        <nav className="w-full lg:px-[10%] px-4 pt-2 pb-10 lg:pb-0 flex items-start justify-between bg-white bg-opacity-70 fixed top-0 left-0 z-50 shadow-xl ">
           {/* Logo */}
           <div className="flex items-center gap-10">
             <div className="text-2xl font-semibold text-white">
@@ -300,7 +300,7 @@ export default function NavAuth() {
 
       {/* Overlay Mobile Menu */}
       {menuOpen && (
-        <div className="fixed inset-0 bg-black opacity-80 bg-opacity-80 flex flex-col items-start px-4 justify-start z-50 transition-all duration-300">
+        <div className="fixed inset-0 bg-black opacity-90 flex flex-col items-start px-4 justify-start z-50 transition-all duration-300 backdrop-blur-2xl">
           <div className="flex items-center justify-between w-full">
             <Image
               src="/inpost-logo-white.svg"
